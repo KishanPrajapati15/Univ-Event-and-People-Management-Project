@@ -1,5 +1,5 @@
 # Univ-Event-and-People-Management-Project
-A website developed using HTML, CSS, JS and Firebase to maintain details of people in events organised in university. 
+A website developed using HTML, CSS, JS and Firebase to maintain details of people in events organised in university. Semester 3 project
 The system consists of two module
 
 Event Manager:
