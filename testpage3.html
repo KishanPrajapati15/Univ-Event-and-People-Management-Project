@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>read, Write, Update, Delete Dat v9.x.x</title>
+    <style>label{display: inline-block; width:80px}
+    input,select{width: 120px;}
+    </style>
+</head>
+<body>
+    <label>Name</label><input id="Namebox" type="text"><br>
+    <label>Roll no</label><input id="Rollbox" type="text"><br>
+    <label>Section</label><input id="Secbox" type="text"><br>
+ <label>Name</label>
+ <select id="Genbox">
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+ </select>
+ 
+ <hr>
+ <button id="Insbtn">INSERT</button>
+ <button id="Selbtn">SELECT</button>
+ <button id="Upbtn">UPDATE</button>
+ <button id="Delbtn">DELETE</button>
+ 
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBUnCqGkKzmvpG0zjnoQse1NnqMuTQEWQA",
+    authDomain: "page3addevent.firebaseapp.com",
+    projectId: "page3addevent",
+    storageBucket: "page3addevent.appspot.com",
+    messagingSenderId: "1072519999079",
+    appId: "1:1072519999079:web:1d021ddb02815c0b5c2ec2"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+ 
+ 
+ import{getDatabase, ref, get, set, child, update, remove}
+ from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+ 
+ const db = getDatabase();
+ 
+ 
+ //-----------------reference----------------//
+ var namebox = document.getElementById("Namebox");
+ var rollbox = document.getElementById("Rollbox");
+ var secbox = document.getElementById("Secbox");
+ var genbox = document.getElementById("Genbox");
+ 
+ var insbtn = document.getElementById("Insbtn");
+ var selbtn = document.getElementById("Selbtn");
+ var upbtn = document.getElementById("Upbtn");
+ var delbtn = document.getElementById("Delbtn");
+ 
+ //----------------------INSERT DATA FUNCTION-----------------------------//
+ function InsertData()
+ {
+ set(ref(db, "TheStudents/"+rollbox.value),
+ {
+     NameofStd: namebox.value,
+ RollNo: rollbox.value,
+ Section: secbox.value,
+ Gender: genbox.value
+ })
+ .then(()=>{
+ alert("data stored succesfully");
+ })
+ .catch((error)=>{
+     alert("unsuccessfil,error"+error);
+ });
+ 
+ }
+ //------------------------------SELECT DATA FUNCTION--------------------------------------------//
+
+//  function SelectData()
+//  {
+//      const dbref = ref(db);
+
+//      get(child(dbref,"/TheStudents/"+rollbox.value)).then(snapshot=>{
+//         if(snapshot.exist()){
+//             namebox.value = snapshot.val().NameofStd;
+//             namebox.value = snapshot.val().Section;
+//             namebox.value = snapshot.val().Gender;
+//         }
+//         else{
+//             alert("No Data Found");
+//         }
+//     })
+//     .catch((error)=>{
+//         alert("unsuccessfil,error"+error);
+    
+//      });
+//  }
+ //--------------------------UPDATE DATA FUNCTION ------------------------------------------------//
+
+//               function UpdateData(){
+//                 update(ref(db, "TheStudents/"+rollbox.value),
+//  {
+//      NameofStd: namebox.value,
+//      Section: secbox.value,
+//      Gender: genbox.value
+//  })
+//  .then(()=>{
+//  alert("data updated succesfully");
+//  })
+//  .catch((error)=>{
+//      alert("unsuccessfil,error"+error);
+//  });
+ 
+//  }       
+ 
+ 
+ //--------------------------DELETE DATA FUNCTION ------------------------------------------------//
+
+//               function DeleteData(){
+//                 remove(ref(db, "TheStudents/"+rollbox.value))
+//                .then(()=>{
+//                 alert("data removed succesfully");
+//               })
+//                .catch((error)=>{
+//                     alert("unsuccessfil,error"+error);
+//  });
+ 
+//  }       
+ 
+ 
+
+ //---------------------------Assign Events To Btns---------------------------------//
+     insbtn.addEventListener('click',InsertData);
+    //  selBtn.addEventListener('click',SelectData);
+    //  upBtn.addEventListener('click',UpdateData);
+    //  selBtn.addEventListener('click',DeleteData);
+    
+ 
+ </script>
+ </body>
+ </html>
+

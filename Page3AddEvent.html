@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
+    <title>University Event & People</title>
+
+    <!-- applying css -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 99, 71, 0.74);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        input {
+            width: 60%;
+            height: 10%;
+            margin: 1em;
+            padding: 1em;
+            outline: none;
+            border-radius: 5px;
+            border: thin solid skyblue;
+            box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.616);
+
+        }
+
+        #content {
+            background-color: rgba(241, 219, 18, 0.747);
+            padding: 40px 40px 40px 40px;
+            box-shadow: 0 4px 16px -8px black;
+            border-radius: 11px;
+            padding-bottom: 50px;
+        }
+
+        .b1 {
+            padding: 1.5em 3em;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 1em;
+            border-radius: 5px;
+            border: white thin;
+            background-color: rgb(47, 238, 29);
+            color: white;
+            box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.616);
+        }
+
+        .b1:hover {
+            background-color: rgb(15, 209, 24);
+            cursor: pointer;
+        }
+
+        #b2 {
+            padding: 1.5em 3em;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 1em;
+            border-radius: 5px;
+            border: white thin;
+            background-color: rgba(207, 70, 241, 0.815);
+            color: white;
+            box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.616);
+        }
+
+        #b2:hover {
+            background-color: rgba(255, 0, 212, 0.863);
+            cursor: pointer;
+        }
+
+
+
+        h2 {
+            font-family: Helvetica, sans-serif;
+        }
+
+        label {
+            cursor: pointer;
+            display: inline-block;
+            padding: 3px 6px;
+            text-align: right;
+            width: 150px;
+            font-family: fantasy;
+            color: rgba(14, 8, 8, 0.808);
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="content">
+        <h2>ENTER EVENT DETAILS</h2>
+
+        <!-- textboxes to add details or events -->
+        <label>Event Name</label><input id="Namebox" type="text"><br>
+        <label>Registration date</label><input id="Rollbox" type="text"><br>
+        <label>Event date</label><input id="Datebox" type="text"><br>
+        <label>Event time</label><input id="Timebox" type="text"><br>
+        <label>Event Details</label><input id="Detailbox" type="text"><br>
+        <label>Coordinator name</label><input id="Cobox" type="text"><br>
+
+        <hr>
+        <!-- adding buttons -->
+        <button class="b1" id="Insbtn">INSERT</button>
+        <button class="b1" id="Selbtn">SELECT</button>
+        <button class="b1" id="Upbtn">UPDATE</button>
+        <button class="b1" id="Delbtn">DELETE</button> <br>
+
+        <button id="b2" onclick="myfunction();">Click here to view all Events </button>
+        <button id="b2" onclick="myfunction2();">Click here to view Students Participation list </button>
+    </div>
+
+    <script>
+        //  functions for page redirection
+        function myfunction() {
+            window.location = "Page4EventTable.html";
+        }
+        function myfunction2() {
+            window.location = "Page4StudentDetailsTable.html";
+        }
+    </script>
+    <!-- applying firebase -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBUnCqGkKzmvpG0zjnoQse1NnqMuTQEWQA",
+            authDomain: "page3addevent.firebaseapp.com",
+            projectId: "page3addevent",
+            storageBucket: "page3addevent.appspot.com",
+            messagingSenderId: "1072519999079",
+            appId: "1:1072519999079:web:1d021ddb02815c0b5c2ec2"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+
+
+        import { getDatabase, ref, get, set, child, update, remove }
+            from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+
+        const db = getDatabase();
+
+
+        //-----------------reference----------------//
+        var namebox = document.getElementById("Namebox");
+        var rollbox = document.getElementById("Rollbox");
+        var datebox = document.getElementById("Datebox");
+        var timebox = document.getElementById("Timebox");
+        var detailbox = document.getElementById("Detailbox");
+        var cobox = document.getElementById("Cobox");
+
+        var insbtn = document.getElementById("Insbtn");
+        var selbtn = document.getElementById("Selbtn");
+        var upbtn = document.getElementById("Upbtn");
+        var delbtn = document.getElementById("Delbtn");
+
+        //----------------------INSERT DATA FUNCTION-----------------------------//
+        function InsertData() {
+            set(ref(db, "Event/" + rollbox.value),
+                {
+                    NameofEvent: namebox.value,
+                    RollNo: rollbox.value,
+                    Date: datebox.value,
+                    Time: timebox.value,
+                    Details: detailbox.value,
+                    Cobox: cobox.value,
+                })
+                .then(() => {
+                    alert("data stored succesfully");
+                })
+                .catch((error) => {
+                    alert("unsuccessful,error" + error);
+                });
+
+        }
+        //------------------------------SELECT DATA FUNCTION--------------------------------------------//
+
+        function SelectData() {
+            const dbref = ref(db);
+
+            get(child(dbref, "Event/" + rollbox.value)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    namebox.value = snapshot.val().NameofEvent;
+                    datebox.value = snapshot.val().Date;
+                    timebox.value = snapshot.val().Time;
+                    detailbox.value = snapshot.val().Details;
+                    cobox.value = snapshot.val().Cobox;
+                }
+                else {
+                    alert("No Data Found");
+                }
+            })
+                .catch((error) => {
+                    alert("unsuccessful,error" + error);
+
+                });
+        }
+        //--------------------------UPDATE DATA FUNCTION------------------------------------------------//
+
+        function UpdateData() {
+            update(ref(db, "Event/" + rollbox.value),
+                {
+                    NameofEvent: namebox.value,
+                    Date: datebox.value,
+                    Time: timebox.value,
+                    Details: detailbox.value,
+                    Cobox: cobox.value
+                })
+                .then(() => {
+                    alert("data updated succesfully");
+                })
+                .catch((error) => {
+                    alert("unsuccessful,error" + error);
+                });
+        }
+
+
+        //--------------------------DELETE DATA FUNCTION ------------------------------------------------//
+
+        function DeleteData() {
+            remove(ref(db, "Event/" + rollbox.value))
+                .then(() => {
+                    alert("data removed succesfully");
+                })
+                .catch((error) => {
+                    alert("unsuccessful,error" + error);
+                });
+
+        }
+
+        //---------------------------Assign Events To Btns---------------------------------//
+        insbtn.addEventListener('click', InsertData);
+        selbtn.addEventListener('click', SelectData);
+        upbtn.addEventListener('click', UpdateData);
+        delbtn.addEventListener('click', DeleteData);
+
+
+
+    </script>
+</body>
+
+</html>
